@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <div className="flex justify-between text-3xl  text-white py-2 md:ml-6 ml-2 mr-2  md:mr-6 relative">
@@ -10,7 +12,7 @@ const Navbar = () => {
 
           className="relative text-xl bg-white rounded-lg text-black p-3 hover:bg-light-gray"
         >
-          Sign Out
+          <Link to="/new">New Account</Link>
         </button>
       </div>
     </div>

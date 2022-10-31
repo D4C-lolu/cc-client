@@ -1,7 +1,11 @@
-import React from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+
+import { useNavigate } from "react-router-dom";
+
+const API_URL = process.env.REACT_APP_API_URL as string;
 
 type AccountValues = {
   user_name: string;
@@ -21,15 +25,27 @@ const AccountForm = () => {
     formState: { errors },
   } = useForm<AccountValues>({ resolver: yupResolver(validationSchema) });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit = (data: AccountValues) => {
+    axios
+      .post(API_URL + "/accounts", {
+        user_name: data.user_name,
+        balance: data.balance,
+      })
+      .catch((err) => {
+        return err;
+      });
     reset();
+    navigate(-1);
   };
 
   return (
     <>
       <div className="py-10 text-center">
-        <p className="text-white text-4xl">Create New Account</p>
+        <p className="text-white text-4xl  border-b-lg border-white">
+          Create New Account
+        </p>
       </div>
 
       <form
@@ -41,7 +57,7 @@ const AccountForm = () => {
             htmlFor="user_name"
             className="text-white text-3xl py-4 self-start"
           >
-            Username
+            Account Name
           </label>
           <input
             id="user_name"
@@ -96,6 +112,17 @@ const AccountForm = () => {
           </button>
         </div>
       </form>
+      <div className="flex justify-around  w-full py-5">
+        <button
+          className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          Back
+        </button>
+      </div>
     </>
   );
 };

@@ -1,21 +1,28 @@
 import { MouseEventHandler, useCallback, useState } from "react";
-import data from "../data.json";
 import { Link } from "react-router-dom";
+import { Data } from "../data";
+import moment from "moment";
+export type DataArr = Data[];
 
-type Data = typeof data;
-
-type SortKeys = keyof Data[0];
+type SortKeys = keyof DataArr[0];
 
 type SortOrder = "ascn" | "desc";
+
+const formatDate = (date: Date) => {
+  const formattedDate = moment(date).format("MMMM Do YYYY");
+  return formattedDate;
+};
 
 function sortData({
   tableData,
   sortKey,
   reverse,
+  data,
 }: {
-  tableData: Data;
+  tableData: DataArr;
   sortKey: SortKeys;
   reverse: boolean;
+  data: DataArr;
 }) {
   if (!sortKey) return tableData;
 
@@ -55,7 +62,7 @@ function SortButton({
   );
 }
 
-function SortableTable({ data }: { data: Data }) {
+function SortableTable({ data }: { data: DataArr }) {
   const [sortKey, setSortKey] = useState<SortKeys>("user_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("ascn");
 
@@ -68,7 +75,13 @@ function SortableTable({ data }: { data: Data }) {
   ];
 
   const sortedData = useCallback(
-    () => sortData({ tableData: data, sortKey, reverse: sortOrder === "desc" }),
+    () =>
+      sortData({
+        tableData: data,
+        sortKey,
+        reverse: sortOrder === "desc",
+        data,
+      }),
     [data, sortKey, sortOrder]
   );
 
@@ -114,8 +127,8 @@ function SortableTable({ data }: { data: Data }) {
                   {account.balance}
                 </Link>
               </td>
-              <td>{account.created_at}</td>
-              <td>{account.updated_at}</td>
+              <td>{formatDate(account?.created_at)}</td>
+              <td>{formatDate(account?.updated_at)}</td>
             </tr>
           );
         })}

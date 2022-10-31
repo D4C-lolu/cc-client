@@ -1,5 +1,4 @@
-import React from "react";
-import { Home, Login, CreateAccount, EditAccount } from "./pages";
+import { Home, CreateAccount, EditAccount } from "./pages";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -8,9 +7,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+
         <Route path="/new" element={<CreateAccount />} />
-        <Route path="/account" element={<EditAccount />} />
+        <Route path="/account/:id" element={<EditAccount />} />
       </Routes>
     </Router>
   );

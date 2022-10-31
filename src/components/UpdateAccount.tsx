@@ -1,11 +1,17 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Data } from "../data";
+import { useNavigate } from "react-router-dom";
 
 type UpdateAccountValue = {
   balance: number;
 };
+
+const API_URL = process.env.REACT_APP_API_URL as string;
 
 const UpdateAccount = () => {
   const validationSchema = Yup.object().shape({
@@ -19,24 +25,49 @@ const UpdateAccount = () => {
     formState: { errors },
   } = useForm<UpdateAccountValue>({ resolver: yupResolver(validationSchema) });
 
+  const { id } = useParams<{ id: string }>();
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    axios
+      .patch(API_URL + "/accounts", {
+        account_number: parseFloat(id as string),
+        balance: data.balance,
+      })
+
+      .catch((err) => {
+        return err;
+      });
     reset();
+    navigate(-1);
   };
+
+  const [account, setAccount] = useState<Data>();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(API_URL + "/accounts/" + id)
+      .then((res) => res.data)
+      .then((res) => setAccount(res))
+      .catch((err) => err);
+  }, [id]);
 
   return (
     <>
       <div className="py-10 text-center">
-        <p className="text-white text-4xl">Update Account Balance</p>
+        <p className="text-white text-4xl border-b-lg border-white">
+          Update Account Balance
+        </p>
       </div>
       <div className="text-center">
-        <div className="text-white text-3xl py-4 self-start">
-          Account: Username
+        <div className="text-white text-2xl py-4 self-start ">
+          Account Name: {account?.user_name}
         </div>
       </div>
       <div className="text-center pt-4">
-        <div className="text-white text-3xl py-4 self-start">
-          Account Number: Number
+        <div className="text-white text-2xl py-4 self-start">
+          Account Number: {account?.account_number}
         </div>
       </div>
       <form
@@ -72,17 +103,39 @@ const UpdateAccount = () => {
             ""
           )}
         </div>
-        <div className="flex flex-col items-center py-5">
+        <div className="flex justify-around  w-full py-5">
           <button
             type="submit"
-            // onClick={() => customFunc()}
-
             className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
           >
             Update
           </button>
+          <button
+            className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
+            onClick={(e) => {
+              e.preventDefault();
+              axios.delete(API_URL + "/accounts/" + id).catch((err) => {
+                return err;
+              });
+
+              navigate(-1);
+            }}
+          >
+            Delete
+          </button>
         </div>
       </form>
+      <div className="flex justify-around  w-full py-5">
+        <button
+          className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(-1);
+          }}
+        >
+          Back
+        </button>
+      </div>
     </>
   );
 };

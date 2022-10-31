@@ -1,11 +1,16 @@
-import React from "react";
-import { Header, AccountForm, Footer } from "../components";
+import { lazy, Suspense } from "react";
+import { Header, Footer } from "../components";
+
+const AccountForm = lazy(() => import("../components/AccountForm"));
 
 const CreateAccount = () => {
   return (
-    <div className="w-full bg-black">
+    <div className="w-full flex flex-col h-full bg-black">
       <Header />
-      <AccountForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AccountForm />
+      </Suspense>
+
       <Footer />
     </div>
   );
