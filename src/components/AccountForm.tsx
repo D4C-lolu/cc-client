@@ -37,7 +37,7 @@ const AccountForm = () => {
       });
     reset();
 
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   return (
@@ -118,7 +118,7 @@ const AccountForm = () => {
           onClick={(e) => {
             e.preventDefault();
 
-            navigate("/");
+            navigate("/", { replace: true });
           }}
         >
           Back

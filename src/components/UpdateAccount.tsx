@@ -38,7 +38,7 @@ const UpdateAccount = () => {
         return err;
       });
     reset();
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   const [account, setAccount] = useState<Data>();
@@ -116,7 +116,7 @@ const UpdateAccount = () => {
                 return err;
               });
 
-              navigate("/");
+              navigate("/", { replace: true });
             }}
           >
             Delete
@@ -128,7 +128,7 @@ const UpdateAccount = () => {
           className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
           onClick={(e) => {
             e.preventDefault();
-            navigate("/");
+            navigate("/", { replace: true });
           }}
         >
           Back
