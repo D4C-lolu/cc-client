@@ -110,8 +110,7 @@ const UpdateAccount = () => {
           </button>
           <button
             className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
               axios.delete(API_URL + "/accounts/" + id).catch((err) => {
                 return err;
               });
@@ -126,8 +125,7 @@ const UpdateAccount = () => {
       <div className="flex justify-around  w-full py-5">
         <button
           className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             navigate("/", { replace: true });
           }}
         >
