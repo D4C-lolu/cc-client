@@ -26,7 +26,7 @@ const UpdateAccount = () => {
   } = useForm<UpdateAccountValue>({ resolver: yupResolver(validationSchema) });
 
   const { id } = useParams<{ id: string }>();
-
+  const navigate = useNavigate();
   const onSubmit = (data: any) => {
     axios
       .patch(API_URL + "/accounts", {
@@ -38,12 +38,10 @@ const UpdateAccount = () => {
         return err;
       });
     reset();
-    navigate(-1);
+    navigate("/");
   };
 
   const [account, setAccount] = useState<Data>();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -118,7 +116,7 @@ const UpdateAccount = () => {
                 return err;
               });
 
-              navigate(-1);
+              navigate("/");
             }}
           >
             Delete
@@ -130,7 +128,7 @@ const UpdateAccount = () => {
           className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
           onClick={(e) => {
             e.preventDefault();
-            navigate(-1);
+            navigate("/");
           }}
         >
           Back

@@ -18,14 +18,13 @@ const AccountForm = () => {
     balance: Yup.number().required("Account balance is required"),
   });
 
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<AccountValues>({ resolver: yupResolver(validationSchema) });
-
-  const navigate = useNavigate();
 
   const onSubmit = (data: AccountValues) => {
     axios
@@ -37,7 +36,8 @@ const AccountForm = () => {
         return err;
       });
     reset();
-    navigate(-1);
+
+    navigate("/");
   };
 
   return (
@@ -117,7 +117,8 @@ const AccountForm = () => {
           className="relative text-2xl bg-white rounded-lg text-black  p-3 hover:bg-light-gray"
           onClick={(e) => {
             e.preventDefault();
-            navigate(-1);
+
+            navigate("/");
           }}
         >
           Back

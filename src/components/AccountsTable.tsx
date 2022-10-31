@@ -6,6 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL as string;
 
 const AccountsTable = () => {
   const [data, setData] = useState<DataArr>([]);
+
   useEffect(() => {
     axios
       .get(API_URL + "/accounts")
